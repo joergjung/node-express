@@ -13,5 +13,12 @@
   "dependencies": {
     "express": "~4.13.4",
     "nodemon": "~1.9.1"
+  },
+  "devDependencies": {
+    "gulp": "~3.9.1",
+    "gulp-jscs": "~3.0.2",
+    "gulp-jshint": "~2.0.0",
+    "jshint": "~2.9.1",
+    "jshint-stylish": "~2.1.0"
   }
 }
