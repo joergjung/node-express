@@ -63,7 +63,7 @@ var router = function(nav) {
                     res.send(results);
                     db.close();
                 });                        
-             });
+            });
             //res.send('inserting books'); 
         });
     return adminRouter;
