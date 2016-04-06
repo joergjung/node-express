@@ -4,52 +4,18 @@ var mongodb = require('mongodb').MongoClient;
 // Database IDs are ObjectIDs
 var objectId = require('mongodb').ObjectID;
 
+
 var router = function(nav) {
+    var bookController = require('../controllers/bookController')(null, nav);
 
-    // secure all book routes. if you're not logged in, you got to '/'
-    bookRouter.use(function(req, res, next) {
-        if (!req.user) {
-            res.redirect('/');
-        }
-        next();
-    });
-
+    // secure all book routes via middleware
+    bookRouter.use(bookController.middleware);
+    // define routes, using bookController
     bookRouter.route('/')
-        .get(function(req, res) {
-            var url = 'mongodb://localhost:27017/libraryApp';
-
-            mongodb.connect(url, function(err, db) {
-                var collection = db.collection('books'); 
-
-                collection.find({}).toArray(function(err, results) {
-                    res.render('bookListView', {title: 'Books',
-                        // use the nav paramter which has been passed into the function
-                        nav: nav,
-                        // the whole books array
-                        books: results
-                    });
-                });
-            });
-        });
+        .get(bookController.getIndex);
 
     bookRouter.route('/:id')
-        .get(function(req, res) {
-            var id = new objectId(req.params.id);
-            var url = 'mongodb://localhost:27017/libraryApp';
-            
-            mongodb.connect(url, function(err, db) {
-                var collection = db.collection('books');
-                
-                collection.findOne({_id: id}, function(err, results) {
-                    res.render('bookView', {title: 'Books',
-                        // use the nav paramter which has been passed into the function
-                        nav: nav,
-                        // the whole books array
-                        book: results
-                    });
-                });
-            });
-        });
+        .get(bookController.getById);
 
     return bookRouter;
 };
