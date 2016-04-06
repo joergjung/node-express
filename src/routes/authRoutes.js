@@ -6,7 +6,6 @@ var passport = require('passport');
 var router = function() {
     authRouter.route('/signUp')
         .post(function(req, res) {
-            console.log(req.body);
 
             var url = 'mongodb://localhost:27017/libraryApp';
             mongodb.connect(url, function(err, db) {
@@ -35,6 +34,15 @@ var router = function() {
         });
 
     authRouter.route('/profile')
+        .all(function(req, res, next) {
+            // if user not logged in, redirect to '/'
+            if (!req.user) {
+                res.redirect('/');
+            }
+            // you only can get to the get method below if you are logged in
+            // next() let's you go there
+            next();
+        })
         .get(function(req, res) {
             res.json(req.user);
         });
