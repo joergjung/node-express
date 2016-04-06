@@ -25,6 +25,10 @@ app.use(express.static('public'));
 // bodyParser handles the request body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use(session({secret: 'library'}));
+// everything dealing with passport is in this file
+require('./src/config/passport')(app);
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
