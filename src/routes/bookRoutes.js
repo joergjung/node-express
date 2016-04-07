@@ -6,11 +6,14 @@ var objectId = require('mongodb').ObjectID;
 
 
 var router = function(nav) {
-    var bookController = require('../controllers/bookController')(null, nav);
+    // naming it "bookService" because there might be another book-company (API provider) in the future
+    var bookService = require('../services/goodreadsService')();
+    var bookController = require('../controllers/bookController')(bookService, nav);
 
     // secure all book routes via middleware
     bookRouter.use(bookController.middleware);
-    // define routes, using bookController
+
+    // define various routes, using bookController
     bookRouter.route('/')
         .get(bookController.getIndex);
 
